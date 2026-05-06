@@ -23,7 +23,7 @@ pipeline {
                  body: "Build succeeded. Access at http://178.128.93.188/Midterm-2026/EngDalin"
         }
         failure {
-            mail to: 'your-email@gmail.com',
+            mail to: 'engdaline43@gmail.com',
                  subject: "SpringBoot-Eng-Dalin Build Failed",
                  body: "Build failed. See Jenkins logs at ${env.BUILD_URL}"
         }
