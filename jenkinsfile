@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh './mvnw clean package'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Use Ansible to copy artifact to remote server
+                sh '''
+                ansible all -i 178.128.93.188, -u root --extra-vars "ansible_password=I4@2026GIC" \
+                -m copy -a "src=target/*.jar dest=/var/www/html/Midterm-2026/EngDalin/app.jar"
+                '''
+            }
+        }
+    }
+    post {
+        success {
+            mail to: 'your-email@gmail.com',
+                 subject: "SpringBoot-Eng-Dalin Build Success",
+                 body: "Build succeeded. Access at http://178.128.93.188/Midterm-2026/EngDalin"
+        }
+        failure {
+            mail to: 'your-email@gmail.com',
+                 subject: "SpringBoot-Eng-Dalin Build Failed",
+                 body: "Build failed. See Jenkins logs at ${env.BUILD_URL}"
+        }
+    }
+}
